@@ -18,8 +18,6 @@ public class MvcMemberFormServlet extends HttpServlet {
          * 이 Contorller에서는 JSP로 가주기 위한 경로를 호출한다.
          * 즉, 서버 내부에서 서버끼리 호출하는 셈이다.*/
 
-        System.out.println("MvcMemberFormServlet.service");
-
         String viewPath = "/WEB-INF/views/new-form.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(viewPath);// Controller에서 View로 이동할 때 사용하는 것. 이 경로로 이동할 거라는 뜻.
         dispatcher.forward(request, response); // Sevlet에서 JSP를 호출해주는 역할을 한다.
