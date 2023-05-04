@@ -43,13 +43,10 @@ public class FrontControllerServletV3 extends HttpServlet {
         // paramMap을 넘겨줘야 한다.
 
         Map<String, String> paramMap = createParamMap(request);
-
         ModelView mv = controller.process(paramMap); // 여기까지의 상황으로서는 얻을 수 있는 게 논리이름밖에 없다. (new-form, save-result, members)
 
         String viewName = mv.getViewName(); // 논리이름
-
         MyView view = viewResolver(viewName);
-
         view.render(mv.getModel(), request, response);
     }
 
