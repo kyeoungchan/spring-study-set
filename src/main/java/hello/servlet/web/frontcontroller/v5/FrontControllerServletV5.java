@@ -2,14 +2,9 @@ package hello.servlet.web.frontcontroller.v5;
 
 import hello.servlet.web.frontcontroller.ModelView;
 import hello.servlet.web.frontcontroller.MyView;
-import hello.servlet.web.frontcontroller.v3.ControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberFormControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberListControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberSaveControllerV3;
-import hello.servlet.web.frontcontroller.v4.ControllerV4;
-import hello.servlet.web.frontcontroller.v4.controller.MemberFormControllerV4;
-import hello.servlet.web.frontcontroller.v4.controller.MemberListControllerV4;
-import hello.servlet.web.frontcontroller.v4.controller.MemberSaveControllerV4;
 import hello.servlet.web.frontcontroller.v5.adapter.ControllerV3HandlerAdapter;
 
 import javax.servlet.ServletException;
@@ -23,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(value = "frontControllerServletV5", urlPatterns = "/front-controller/v5/*")
+@WebServlet(name = "frontControllerServletV5", urlPatterns = "/front-controller/v5/*")
 public class FrontControllerServletV5 extends HttpServlet {
 
     //    private Map<String, ControllerV4> controllerMap = new HashMap<>(); // 비교하기 위한 FrontControllerV4에서 사용하던 controllerMap이다.
@@ -38,9 +33,9 @@ public class FrontControllerServletV5 extends HttpServlet {
     }
 
     private void initHandlerMappingMap() {
-        handelrMappingMap.put("/front-controller/v3/members/new-form", new MemberFormControllerV3());
-        handelrMappingMap.put("/front-controller/v3/members/save", new MemberSaveControllerV3());
-        handelrMappingMap.put("/front-controller/v3/members", new MemberListControllerV3());
+        handelrMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
+        handelrMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
+        handelrMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
     }
 
     private void initHandlerAdapters() {
@@ -92,7 +87,7 @@ public class FrontControllerServletV5 extends HttpServlet {
         throw new IllegalArgumentException("handler adapter를 찾을 수 없습니다.");
     }
 
-    private static MyView viewResolver(String viewName) {
+    private MyView viewResolver(String viewName) {
         return new MyView("/WEB-INF/views/" + viewName + ".jsp");
     }
 }
