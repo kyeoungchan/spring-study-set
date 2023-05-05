@@ -25,7 +25,7 @@ public class MyView {
         dispatcher.forward(request, response);
     }
 
-    private static void modelToRequestAttribute(Map<String, Object> model, HttpServletRequest request) {
+    private void modelToRequestAttribute(Map<String, Object> model, HttpServletRequest request) {
         // 안 와닿을 수 있으므로 메서드로 뽑아서 이름을 부여해준다.
 
         model.forEach((key, value) -> request.setAttribute(key, value)); // model에 있는 모든 값들을 request에 다 담아놓는다.
