@@ -31,6 +31,7 @@ public class ResponseJsonServlet extends HttpServlet {
         // {"username":"charles", "age":20}
         String result = objectMapper.writeValueAsString(helloData);
         response.getWriter().write(result);
+//        response.getOutputStream();
     }
 
 }
