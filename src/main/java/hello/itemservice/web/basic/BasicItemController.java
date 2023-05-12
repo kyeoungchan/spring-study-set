@@ -68,6 +68,25 @@ public class BasicItemController {
         return "/basic/item";
     }
 
+    /**
+     * @ModelAttribute("item") Item itemValue
+     * @ModelAttribute의 파라미터로 들어가는 name 속성의 값은 뷰 템플릿 엔진에서 사용이 되는 name이고,
+     * Item 타입의 변수명인 itemValue는 자바 코드 메서드에서 사용되는 name이다.
+     */
+//    @PostMapping("/add")
+    public String addItemV2_2(@ModelAttribute("item") Item itemValue) {
+
+        itemRepository.save(itemValue);
+//        model.addAttribute("item", item);
+
+        return "/basic/item";
+    }
+
+    /**
+     * @ModelAttribute name 생략 가능
+     * model.addAttribute(item); 자동 추가, 생략 가능
+     * 생략시 model에 저장되는 name은 클래스명 첫글자만 소문자로 등록 Item -> item
+     */
 //    @PostMapping("/add")
     public String addItemV3(@ModelAttribute Item item) {
 
@@ -116,10 +135,27 @@ public class BasicItemController {
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item, Model model) {
 
         itemRepository.update(itemId, item);
         return "redirect:/basic/items/{itemId}";
+    }
+
+    //    @PostMapping("/{itemId}/edit")
+    public String edit2(@PathVariable Long itemId, @ModelAttribute Item item, Model model) {
+
+//        itemRepository.update(itemId, item);
+//        return "redirect:/basic/items/{itemId}";
+        /* 만약 리다이렉트로 하지 않고 뷰 호출만 한다면!
+         * 컨트롤러 호출이 아니라 뷰 호출을 하게 되는데 그러려면 itemId를 모델에 담고 basic/item을 호출해야하는데
+         * 그게 결국 item() 메서드랑 로직이 같고 중복이다.
+         * 그리고 Post 메서드로 매핑이 계속 되는 것이기 때문에 멱등성이 보장되지 않아 위험할 수 있다.
+         * 따라서 그냥 리다이렉트로 내보내는 것이 낫다.*/
+
+        itemRepository.update(itemId, item);
+        Item updatedItem = itemRepository.findById(itemId);
+        model.addAttribute("item", updatedItem);
+        return "basic/item";
     }
 
     /**
