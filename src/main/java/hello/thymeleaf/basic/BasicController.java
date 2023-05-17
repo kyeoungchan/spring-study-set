@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/basic")
-public class BaiseController {
+public class BasicController {
 
     @GetMapping("text-basic")
     public String textBasic(Model model) {
