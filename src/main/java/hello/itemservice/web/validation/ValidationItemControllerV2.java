@@ -79,8 +79,8 @@ public class ValidationItemControllerV2 {
         return "redirect:/validation/v2/items/{itemId}";
     }
 
-    //    @PostMapping("/add")
-    public String addItemV2(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+//        @PostMapping("/add")
+    public String addItemV2(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         // 검증 로직
         if (!StringUtils.hasText(item.getItemName())) {
@@ -116,7 +116,7 @@ public class ValidationItemControllerV2 {
     }
 
 //    @PostMapping("/add")
-    public String addItemV3(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String addItemV3(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         // 검증 로직
         if (!StringUtils.hasText(item.getItemName())) {
@@ -152,7 +152,7 @@ public class ValidationItemControllerV2 {
     }
 
     @PostMapping("/add")
-    public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         log.info("objectName={}", bindingResult.getObjectName());
         log.info("target={}", bindingResult.getTarget());
@@ -179,7 +179,6 @@ public class ValidationItemControllerV2 {
         // 검증에 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
             log.info("errors = {}", bindingResult);
-            // bindingResult는 뷰에 자동으로 넘어가기 때문에 Model Attribute에 안 넣어도 된다.
             return "validation/v2/addForm";
         }
 
