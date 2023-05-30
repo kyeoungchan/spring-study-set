@@ -17,14 +17,11 @@ public class JpaMain {
 
 
         try {
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5) // 5번부터
-                    .setMaxResults(8) // 8개 가져와. 페이지네이션이다.
-                    .getResultList();
-            for (Member member : result) {
-                System.out.println("member.getName() = " + member.getName());
-            }
-
+            // 영속
+            Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZ");
+//            em.persist(member); // 불필요한 코드
+            System.out.println("=============");
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
