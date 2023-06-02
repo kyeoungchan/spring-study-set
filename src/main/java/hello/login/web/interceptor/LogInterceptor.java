@@ -25,7 +25,6 @@ public class LogInterceptor implements HandlerInterceptor {
 
 //        @RequestMapping : HandlerMethod가 넘어온다.
 //        정적 리소스 : ResourceHttpRequestHandler가 사용된다.
-
         if (handler instanceof HandlerMethod) {
             // 이 타입이 맞는지 확인하는 과정을 거쳐서 핸들러를 사용한다.
             HandlerMethod hm = (HandlerMethod) handler;// 호출할 컨트롤러 메서드의 모든 정보가 포함되어 있다.
