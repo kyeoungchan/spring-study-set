@@ -6,6 +6,7 @@ import hello.login.web.filter.LoginCheckFilter;
 import hello.login.web.interceptor.LogInterceptor;
 import hello.login.web.interceptor.LoginCheckInterceptor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -36,7 +37,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/css/**", "/*.ico", "/error");
     }
 
-//    @Bean
+    @Bean
     public FilterRegistrationBean logFilter() {
         /* 스프링 부트가 WAS를 들고 띄우기 때문에 WAS를 띄울 때 필터를 스프링부트가 같이 띄워준다.*/
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
@@ -47,7 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
         return filterRegistrationBean;
     }
 
-//    @Bean
+    //    @Bean
     public FilterRegistrationBean loginCheckFilter() {
         /* 스프링 부트가 WAS를 들고 띄우기 때문에 WAS를 띄울 때 필터를 스프링부트가 같이 띄워준다.*/
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();

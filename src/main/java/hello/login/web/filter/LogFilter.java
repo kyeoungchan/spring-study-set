@@ -1,6 +1,7 @@
 package hello.login.web.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ public class LogFilter implements Filter {
 
         try {
             log.info("REQUEST [{}][{}]", uuid, requestURI);
+            MDC.put("traceId", uuid);
             chain.doFilter(request, response); // 다음 필터가 있으면 다음 필터 호출, 없으면 서블릿 호출
         } catch (Exception e) {
             throw e;
