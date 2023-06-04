@@ -18,10 +18,14 @@ public class JpaMain {
 
         try {
             // 영속
-            Member member = em.find(Member.class, 150L);
-            member.setName("ZZZZ");
-//            em.persist(member); // 불필요한 코드
-            System.out.println("=============");
+//            Member member = em.find(Member.class, 150L);
+//            member.setName("ㅁㅁㅁㅁ");
+//
+//            em.clear();
+//
+//            Member member2 = em.find(Member.class, 150L);
+
+//            System.out.println("=========");
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
