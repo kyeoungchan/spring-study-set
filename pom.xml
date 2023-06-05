@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.1.214</version>
+            <version>1.4.200</version>
         </dependency>
 
 <!--        Java 11: JAXV API를 JDK에서 아예 제거-->
