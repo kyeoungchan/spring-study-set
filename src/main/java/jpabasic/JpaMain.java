@@ -16,26 +16,28 @@ public class JpaMain {
 
 
         try {
-            Member member1 = new Member();
-            member1.setUsername("A");
 
-            Member member2 = new Member();
-            member2.setUsername("B");
+            // 저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
-            Member member3 = new Member();
-            member3.setUsername("C");
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setTeam(team); // JPA가 알아서 team에서 PK값을 꺼내서 FK값으로 사용을 한다.
+            em.persist(member);
 
-            System.out.println("==============");
+            em.flush();
+            em.clear();
 
-            em.persist(member1);
-            em.persist(member2);
-            em.persist(member3);
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam.getName() = " + findTeam.getName());
 
-            System.out.println("member1.getId() = " + member1.getId());
-            System.out.println("member2.getId() = " + member2.getId());
-            System.out.println("member3.getId() = " + member3.getId());
+            //
+            Team newTeam = em.find(Team.class, 100L);
+            findMember.setTeam(newTeam);
 
-            System.out.println("==============");
 
             tx.commit();
         } catch (Exception e) {
