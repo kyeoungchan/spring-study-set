@@ -21,23 +21,22 @@ public class JpaMain {
             // 저장
             Team team = new Team();
             team.setName("TeamA");
+//            team.getMembers().add(member);
             em.persist(team);
 
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team); // JPA가 알아서 team에서 PK값을 꺼내서 FK값으로 사용을 한다.
+            member.changeTeam(team); //**
             em.persist(member);
 
-            em.flush();
-            em.clear();
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
 
-            Member findMember = em.find(Member.class, member.getId());
-
-            List<Member> members = findMember.getTeam().getMembers();
-
+            System.out.println("============");
             for (Member m : members) {
-                System.out.println("m.getUsername() = " + m.getUsername());
+                System.out.println("m = " + m);
             }
+            System.out.println("============");
 
             tx.commit();
         } catch (Exception e) {
