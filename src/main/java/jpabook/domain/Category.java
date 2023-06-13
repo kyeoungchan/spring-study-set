@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Category {
+public class Category extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -25,7 +25,6 @@ public class Category {
             joinColumns = @JoinColumn(name = "CATEGORY_ID"), // 내가 조인하는 건 얘고,
             inverseJoinColumns = @JoinColumn(name = "ITEM_ID") // 반대쪽이 조인하는 건 얘다.
     )
-
     private List<Item> items = new ArrayList<>();
 
 }
