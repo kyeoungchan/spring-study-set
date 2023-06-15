@@ -21,18 +21,6 @@ public class Member {
     @Embedded
     private Address homeAddress;
 
-    // Address
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "city",
-                    column = @Column(name = "WORK_CITY")),
-            @AttributeOverride(name = "street",
-                    column = @Column(name = "WORK_STREET")),
-            @AttributeOverride(name = "zipcode",
-                    column = @Column(name = "WORK_ZIPCODE"))
-    }) // 컬럼명을 다 따로 매핑해주어야 한다.
-    private Address workAddress;
-
     public Long getId() {
         return id;
     }
