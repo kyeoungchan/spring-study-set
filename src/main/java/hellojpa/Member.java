@@ -37,4 +37,14 @@ public class Member {
     public void setAge(int age) {
         this.age = age;
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", age=" + age +
+//                ", team=" + team + // 꼭 지우자! 양방향 매핑 시 stack overflow 에러가 나서 큰일날 수 있다.
+                '}';
+    }
 }
