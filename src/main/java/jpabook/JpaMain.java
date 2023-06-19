@@ -1,6 +1,7 @@
 package jpabook;
 
 import jpabook.domain.Book;
+import jpabook.domain.Item;
 import jpabook.domain.Order;
 import jpabook.domain.OrderItem;
 
@@ -23,6 +24,9 @@ public class JpaMain {
             book.setAuthor("김영한");
 
             em.persist(book);
+
+            em.createQuery("select i from Item i where type(i) = Book ", Item.class)
+                    .getResultList();
 
             tx.commit();
         } catch (Exception e) {
