@@ -25,6 +25,10 @@ public class JpaMain {
             teamB.setName("팀B");
             em.persist(teamB);
 
+//            Team teamC = new Team();
+//            teamB.setName("팀C");
+//            em.persist(teamC);
+
             Member member1 = new Member();
             member1.setUsername("회원1");
             member1.setTeam(teamA);
@@ -43,8 +47,10 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select distinct t from Team t join fetch t.members";
+            String query = "select t From Team t";
             List<Team> result = em.createQuery(query, Team.class)
+                    .setFirstResult(0)
+                    .setMaxResults(2)
                     .getResultList();
 
             System.out.println("result = " + result.size());
