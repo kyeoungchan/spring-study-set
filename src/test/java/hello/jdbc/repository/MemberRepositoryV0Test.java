@@ -2,7 +2,6 @@ package hello.jdbc.repository;
 
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -19,12 +18,13 @@ class MemberRepositoryV0Test {
         // repository.save에서 checked Exception이 올라오기 때문에 처리를 해야한다.
 
         // save
-        Member member = new Member("memberV1", 10000);
+        Member member = new Member("memberV0", 10000);
         repository.save(member);
 
         // findById
         Member findMember = repository.findById(member.getMemberId());
         log.info("findMember={}", findMember);
+        log.info("member == findMember {}", member == findMember);
         assertThat(findMember).isEqualTo(member);
     }
 }

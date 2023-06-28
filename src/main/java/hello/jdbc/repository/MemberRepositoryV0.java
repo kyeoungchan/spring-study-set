@@ -49,14 +49,14 @@ public class MemberRepositoryV0 {
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, memberId);
 
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
+            rs = pstmt.executeQuery(); // rs : select 결과를 담는 일종의 통 개념
+            if (rs.next()) { // 처음에는 아무것도 안 가리키다가 next()를 호출하면 데이터가 있는지 없는지 확인 => 한 번은 꼭 호출을 해줘야한다.
                 Member member = new Member();
                 member.setMemberId(rs.getString("member_id"));
                 member.setMoney(rs.getInt("money"));
                 return member;
             } else {
-                // 어떤 Member가 안 들어왔는지 확인하기 위해서 키값을 넣어주는 것이 좋다.
+                // 어떤 Member에서 에러가 생겼는지 확인하기 위해서 키값을 넣어주는 것이 좋다.
                 throw new NoSuchElementException("member not found memberId=" + memberId);
             }
         } catch (SQLException e) {
