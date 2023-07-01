@@ -124,14 +124,12 @@ public class MemberRepositoryV3 {
         JdbcUtils.closeStatement(stmt);
         // 주의! 트랜잭션 동기화를 사용하려면 DataSourceUtils를 사용해야 한다.
         DataSourceUtils.releaseConnection(con, dataSource);
-//        JdbcUtils.closeConnection(con);
 
     }
 
     private Connection getConnection() throws SQLException {
         // 주의! 트랜잭션 동기화를 사용하려면 DataSourceUtils를 사용해야 한다.
         Connection con = DataSourceUtils.getConnection(dataSource);
-//        Connection con = dataSource.getConnection();
         log.info("get connection={}, class={}", con, con.getClass());
         return con;
     }
