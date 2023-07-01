@@ -6,6 +6,7 @@ import org.springframework.validation.MessageCodesResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 public class MessageCodesResolverTest {
 
     MessageCodesResolver codesResolver = new DefaultMessageCodesResolver();
@@ -13,6 +14,7 @@ public class MessageCodesResolverTest {
     @Test
     void messageCodesResolverObject() {
         String[] messageCodes = codesResolver.resolveMessageCodes("required", "item");
+
         assertThat(messageCodes).containsExactly("required.item", "required");
     }
 
