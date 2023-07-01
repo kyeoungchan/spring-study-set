@@ -24,7 +24,7 @@ class MemberRepositoryV1Test {
         // 기본 DriverManager - 항상 새로운 커넥션을 획득
 //        DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USERNAME, PASSWORD);
 
-        // 커넥션 풀링
+        // 커넥션 풀링 : HikariProxyConnection -> JdbcConnection
         HikariDataSource dataSource = new HikariDataSource();
         // DataSource로 타입을 주면 아래의 setter들을 호출할 수 없다.
         dataSource.setJdbcUrl(URL);
@@ -47,6 +47,7 @@ class MemberRepositoryV1Test {
         log.info("findMember={}", findMember);
         log.info("member == findMember {}", member == findMember);
         assertThat(findMember).isEqualTo(member);
+        assertThat(findMember).isNotNull();
 
         // update : money : 10000 -> 20000
         repository.update(member.getMemberId(), 20000);
