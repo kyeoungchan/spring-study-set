@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class CheckedAppTest {
+public class UncheckedAppTest {
 
     @Test
-    void checked() {
+    void unchecked() {
         Controller controller = new Controller();
         assertThatThrownBy(() -> controller.request())
                 .isInstanceOf(Exception.class);
@@ -19,7 +19,7 @@ public class CheckedAppTest {
     static class Controller {
         Service service = new Service();
 
-        public void request() throws SQLException, ConnectException {
+        public void request() {
             service.logic();
         }
     }
@@ -28,22 +28,42 @@ public class CheckedAppTest {
         Repository repository = new Repository();
         NetworkClient networkClient = new NetworkClient();
 
-        public void logic() throws SQLException, ConnectException {
+        public void logic() {
             repository.call();
             networkClient.call();
         }
     }
 
     static class NetworkClient {
-        public void call() throws ConnectException {
-            throw new ConnectException("연결 실패");
+        public void call() {
+            throw new RuntimeConnectionException("연결 실패");
         }
     }
 
     static class Repository {
-        public void call() throws SQLException {
-            throw new SQLException("ex");
+        public void call() {
+            try {
+                runSQL();
+            } catch (SQLException e) {
+                throw new RuntimeSQLException(e);
+            }
         }
 
+        public void runSQL() throws SQLException{
+            throw new SQLException("ex");
+        }
     }
+
+    static class RuntimeConnectionException extends RuntimeException {
+        public RuntimeConnectionException(String message) {
+            super(message);
+        }
+    }
+
+    static class RuntimeSQLException extends RuntimeException {
+        public RuntimeSQLException(Throwable cause) {
+            super(cause);
+        }
+    }
+
 }
