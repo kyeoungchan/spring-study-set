@@ -64,7 +64,6 @@ public class ExTranslatorV1Test {
         }
     }
 
-
     @RequiredArgsConstructor
     static class Repository {
 
