@@ -29,7 +29,6 @@ public class MemberRepositoryV5 implements MemberRepository{
     @Override
     public Member findById(String memberId) {
         String sql = "select * from member where member_id = ?";
-        // 한 건 조회용 메서드
         return template.queryForObject(sql, memberRowMapper(), memberId);
     }
 
