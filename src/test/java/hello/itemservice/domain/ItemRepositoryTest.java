@@ -71,7 +71,7 @@ class ItemRepositoryTest {
 
         //둘 다 없음 검증
         test(null, null, item1, item2, item3);
-        test("", null, item1, item2, item3);
+        test("", null, item1, item2, item3); // isEmpty()는 문자의 경우 길이가 0이어도 true를 반환한다.
 
         //itemName 검증
         test("itemA", null, item1, item2);
@@ -87,6 +87,6 @@ class ItemRepositoryTest {
 
     void test(String itemName, Integer maxPrice, Item... items) {
         List<Item> result = itemRepository.findAll(new ItemSearchCond(itemName, maxPrice));
-        assertThat(result).containsExactly(items);
+        assertThat(result).containsExactly(items); // item들의 순서도 다 맞는지 확인해준다.
     }
 }
