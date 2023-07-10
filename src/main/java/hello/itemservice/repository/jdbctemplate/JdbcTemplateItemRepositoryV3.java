@@ -7,51 +7,47 @@ import hello.itemservice.repository.ItemUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * NamedParameterJdbcTemplate
- * SqlParameterSource
- * - BeanPropertySqlParameterSource
- * - MapSqlParameterSource
- * Map
- *
- * Bean PropertyRowMapper
- *
+ * SimpleJdbcInsert
  */
 @Slf4j
 @Repository
-public class JdbcTemplateItemRepositoryV2 implements ItemRepository {
+public class JdbcTemplateItemRepositoryV3 implements ItemRepository {
 
-    //    private final JdbcTemplate template;
     private final NamedParameterJdbcTemplate template;
+    private final SimpleJdbcInsert jdbcInsert;
 
     /**
      * @param dataSource JdbcTemplate 파라미터로 DataSource가 필요하다.
      */
-    public JdbcTemplateItemRepositoryV2(DataSource dataSource) {
+    public JdbcTemplateItemRepositoryV3(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
+        this.jdbcInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName("item") // 테이블명 지정
+                .usingGeneratedKeyColumns("id"); // PK가 자동으로 생성되는 게 있다면 지정
+        // 테이블명만 지정이 돼있다면 그 테이블에 어떤 컬럼이 있는지 메타 데이터로 다 알 수 있다. => 내부적으로 다 갖고 있음.
+//                .usingColumns("item_name", "price", "quantity") // 생략가능
     }
 
     @Override
     public Item save(Item item) {
-        String sql = "insert into item(item_name, price, quantity) " +
+        /*String sql = "insert into item(item_name, price, quantity) " +
                 "values (:itemName, :price, :quantity)";
 
         SqlParameterSource param = new BeanPropertySqlParameterSource(item);
@@ -61,6 +57,10 @@ public class JdbcTemplateItemRepositoryV2 implements ItemRepository {
 
         long key = keyHolder.getKey().longValue(); // 키 값이 꺼내진다.
         item.setId(key);
+        return item;*/
+        SqlParameterSource param = new BeanPropertySqlParameterSource(item);
+        Number key = jdbcInsert.executeAndReturnKey(param);
+        item.setId(key.longValue());
         return item;
     }
 
@@ -104,10 +104,8 @@ public class JdbcTemplateItemRepositoryV2 implements ItemRepository {
         }
 
         boolean andFlag = false;
-//        List<Object> param = new ArrayList<>();
         if (StringUtils.hasText(itemName)) {
             sql += " item_name like concat('%',:itemName,'%')";
-//            param.add(itemName);
             andFlag = true;
         }
 
@@ -121,23 +119,13 @@ public class JdbcTemplateItemRepositoryV2 implements ItemRepository {
                 sql += " and";
             }
             sql += " price <= :maxPrice";
-//            param.add(maxPrice);
         }
         log.info("sql={}", sql);
 
-//        return template.query(sql, itemRowMapper(), param.toArray()); // queryForObject()는 하나만 반환하면, query()는 리스트를 가져온다.
         return template.query(sql, param, itemRowMapper());
     }
 
     private RowMapper<Item> itemRowMapper() {
-        /*return ((rs, rowNum) -> {
-            Item item = new Item();
-            item.setId(rs.getLong("id"));
-            item.setItemName(rs.getString("item_name"));
-            item.setPrice(rs.getInt("price"));
-            item.setQuantity(rs.getInt("quantity"));
-            return item;
-        });*/
         return BeanPropertyRowMapper.newInstance(Item.class); // camel 변환 지원
     }
 }
