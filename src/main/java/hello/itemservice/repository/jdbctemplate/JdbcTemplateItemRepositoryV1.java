@@ -94,6 +94,11 @@ public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
         }
 
         if (maxPrice != null) {
+            /* 예를 들어
+            * where price <= ?
+            * 혹은
+            * where item_name like concat('%',?,'%')
+		and price <= ?*/
             if (andFlag) {
                 sql += " and";
             }
