@@ -31,10 +31,13 @@ public class ItemServiceApplication {
 		return new TestDataInit(itemRepository);
 	}
 
+/*
 	@Bean
 	@Profile("test")
 	public DataSource dataSource() {
-		/* 테스트 케이스를 실행하는 경우 DataSource를 스프링 부트에 직접 등록한다.*/
+		*/
+/* 테스트 케이스를 실행하는 경우 DataSource를 스프링 부트에 직접 등록한다.*//*
+
 		log.info("메모리 데이터베이스 초기화");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.h2.Driver"); // h2 데이터베이스 드라이버 지정
@@ -43,4 +46,5 @@ public class ItemServiceApplication {
 		dataSource.setPassword("");
 		return dataSource;
 	}
+*/
 }
