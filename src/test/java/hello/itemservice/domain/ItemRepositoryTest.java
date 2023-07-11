@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest // 자기보다 상위 패키지를 뒤져서 @SpringBootApplication을 찾아낸다.
 class ItemRepositoryTest {
 
     @Autowired
