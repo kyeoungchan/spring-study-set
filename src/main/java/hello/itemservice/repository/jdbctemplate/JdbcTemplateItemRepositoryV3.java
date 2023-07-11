@@ -47,7 +47,8 @@ public class JdbcTemplateItemRepositoryV3 implements ItemRepository {
 
     @Override
     public Item save(Item item) {
-        /*String sql = "insert into item(item_name, price, quantity) " +
+/*
+        String sql = "insert into item(item_name, price, quantity) " +
                 "values (:itemName, :price, :quantity)";
 
         SqlParameterSource param = new BeanPropertySqlParameterSource(item);
@@ -57,7 +58,8 @@ public class JdbcTemplateItemRepositoryV3 implements ItemRepository {
 
         long key = keyHolder.getKey().longValue(); // 키 값이 꺼내진다.
         item.setId(key);
-        return item;*/
+        return item;
+*/
         SqlParameterSource param = new BeanPropertySqlParameterSource(item);
         Number key = jdbcInsert.executeAndReturnKey(param);
         item.setId(key.longValue());
