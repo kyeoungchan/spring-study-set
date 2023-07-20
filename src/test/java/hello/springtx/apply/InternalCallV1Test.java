@@ -9,48 +9,54 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+@Slf4j
 @SpringBootTest
-public class TxLevelTest {
+public class InternalCallV1Test {
 
-    @Autowired
-    LevelService service;
+    @Autowired CallService callService;
 
     @Test
-    void orderTest() {
-        service.write();
-        service.read();
+    void printProxy() {
+        log.info("callService class={}", callService.getClass());
+    }
+
+    @Test
+    void internalCall() {
+        callService.internal();
+    }
+
+    @Test
+    void externalCall() {
+        callService.external();
     }
 
     @TestConfiguration
-    static class TxLevelConfig {
+    static class InternalCallV1TestConfig {
+
         @Bean
-        LevelService levelService() {
-            return new LevelService();
+        CallService callService() {
+            return new CallService();
         }
+
     }
 
     @Slf4j
-    @Transactional(readOnly = true)
-    static class LevelService {
-
-        @Transactional(readOnly = false)
-        public void write() {
-            log.info("call write");
+    static class CallService {
+        public void external() {
+            log.info("call external");
             printTxInfo();
+            internal();
         }
 
-        public void read() {
-            log.info("call read");
+        @Transactional
+        public void internal() {
+            log.info("call internal");
             printTxInfo();
-
         }
 
         private void printTxInfo() {
             boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
             log.info("tx active={}", txActive);
-            boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
-            log.info("tx readOnly={}", readOnly);
-
         }
     }
 

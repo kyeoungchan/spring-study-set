@@ -22,6 +22,7 @@ public class TxBasicTest {
 
     @Test
     void proxyCheck() {
+        //BasicService$$EnhancerBySpringCGLIB...
         log.info("aop class={}", basicService.getClass());
         assertThat(AopUtils.isAopProxy(basicService)).isTrue();
     }
