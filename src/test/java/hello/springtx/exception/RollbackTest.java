@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class RollbackTest {
 
-    @Autowired RollbackService service;
+    @Autowired
+    RollbackService service;
 
     @Test
     void runtimeException() {
@@ -33,14 +34,13 @@ public class RollbackTest {
     }
 
     @TestConfiguration
-    static class RollbackTestConfig{
+    static class RollbackTestConfig {
 
         @Bean
         RollbackService rollbackService() {
             return new RollbackService();
         }
     }
-
 
 
     @Slf4j
