@@ -24,10 +24,12 @@ public class TraceId {
     }
 
     public TraceId createNextId() {
+        // 트랜잭션 id는 유지하면서, level 만 1 증가한다.
         return new TraceId(id, level + 1);
     }
 
     public TraceId createPreviousId() {
+        // 트랜잭션 id는 유지하면서, level 만 1 감소한다.
         return new TraceId(id, level - 1);
     }
 
