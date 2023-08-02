@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    @NotEmpty
     private String name;
 
     @Embedded // 내장 타입을 포함했다는 어노테이션. @Embeddable과 더불어 둘 중 하나만 있어도 된다.
