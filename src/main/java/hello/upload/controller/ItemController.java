@@ -72,9 +72,10 @@ public class ItemController {
 
     @GetMapping("/attach/{itemId}")
     public ResponseEntity<Resource> downloadAttach(@PathVariable Long itemId) throws MalformedURLException {
-        /* itemId에 접근할 수 있는 권한이나 사용자만 itemId를 받아서
-        * 접근할 수 있는 권한이 있는 경우에만 해당 로직을 받도록 구현할 수 있다.
-        * 현재 구현돼있지는 않음.*/
+        /* itemId를 파라미터로 적용한 이유
+         * itemId에 접근할 수 있는 권한이나 사용자만 itemId를 받아서
+         * 접근할 수 있는 권한이 있는 경우에만 해당 로직을 받도록 구현할 수 있다.
+         * 현재 구현돼있지는 않음.*/
         Item item = itemRepository.findById(itemId);
         String storeFileName = item.getAttachFile().getStoreFileName();
         String uploadFileName = item.getAttachFile().getUploadFileName(); // 실제 사용자가 다운로드를 받을 때의 파일명을 사용하기 위함.
@@ -85,9 +86,10 @@ public class ItemController {
 
         String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8); // 한글이나 특수문자 깨짐을 없애주기한 인코딩
         String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
-        /* 브라우저가 Content-Disposition 헤더를 보고 다운로드 받을지를 결정하게 된다.*/
+        /* 브라우저가 Content-Disposition 헤더를 보고 다운로드 받을지를 결정하게 된다.
+         * 이 헤더를 설정하지 않으면 다운로드가 안 되고 바디에 파일 내용을 쓰기만 한다.*/
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+//                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition) // 이거를 제외하면 다운로드가 되지 않는다.
                 .body(resource);
     }
 }
