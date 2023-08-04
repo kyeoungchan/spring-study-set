@@ -48,9 +48,23 @@ public class OrderSimpleApiController {
     @GetMapping("/api/v2/simple-orders")
     public List<SimpleOrderDto> ordersV2() {
         // 참고로 List로 바로 반환하면 안 되고, Result 같은 객체로 감싸서 반환해줘야 한다.
-        return orderRepository.findAllByString(new OrderSearch()).stream()
+
+        List<SimpleOrderDto> result = orderRepository.findAllByString(new OrderSearch()).stream()
                 .map(SimpleOrderDto::new)
                 .collect(Collectors.toList());
+
+        return result;
+    }
+
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> ordersV3() {
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+
+        List<SimpleOrderDto> result = orders.stream()
+                .map(SimpleOrderDto::new)
+                .collect(Collectors.toList());
+
+        return result;
     }
 
     @Data

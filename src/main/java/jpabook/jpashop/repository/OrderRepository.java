@@ -98,5 +98,17 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+    public List<Order> findAllWithMemberDelivery() {
+        /* Order 조회시
+         * SQL 입장에서는 Member와 Delivery가 조인하면서 Select 절에 다 넣어서 온다.
+         * 따라서 한 번에 다 땡겨 온다.
+         * Lazy 모드도 무시하고 프록시도 아니고 진짜 객체를 다 댕겨온다.
+         * 참고로 fetch 조인은 SQL은 없고 JPA만 있는 문법이다.*/
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class
+        ).getResultList();
+    }
 }
 
