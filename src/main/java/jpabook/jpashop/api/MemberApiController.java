@@ -46,14 +46,14 @@ public class MemberApiController {
                 .map(m -> new MemberDto(m.getName()))
                 .collect(Collectors.toList());
 
-//        return new Result(collect.size(), collect);
-        return new Result(collect);
+        return new Result(collect.size(), collect);
+//        return new Result(collect);
     }
 
     @Data
     @AllArgsConstructor
     static class Result<T> {
-//        private int count;
+        private int count;
         private T data;
     }
 
@@ -96,7 +96,7 @@ public class MemberApiController {
     /**
      * 수정 API
      */
-    @PutMapping("/api/v2/members/{id}")
+    @PatchMapping("/api/v2/members/{id}")
     public UpdateMemberResponse updateMemberV2(
             @PathVariable("id") Long id,
             @RequestBody @Valid UpdateMemberRequest request) {
