@@ -12,7 +12,6 @@ public class TemplateMethodTest {
     void templateMethodV0() {
         logic1();
         logic2();
-
     }
 
     private void logic1() {
