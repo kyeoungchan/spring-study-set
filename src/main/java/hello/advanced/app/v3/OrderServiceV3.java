@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 public class OrderServiceV3 {
 
     private final OrderRepositoryV3 orderRepository;
+//    private final HelloTraceV2 trace;
     private final LogTrace trace;
 
     public void orderItem(String itemId) {
 
         TraceStatus status = null;
         try {
+//            status = trace.beginSync(traceId, "OrderService.orderItem()");
             status = trace.begin("OrderService.orderItem()");
+//            orderRepository.save(status.getTraceId(), itemId);
             orderRepository.save(itemId);
             trace.end(status);
         } catch (Exception e) {

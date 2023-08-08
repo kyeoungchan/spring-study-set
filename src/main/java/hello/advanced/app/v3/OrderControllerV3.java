@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderControllerV3 {
 
     private final OrderServiceV3 orderService;
+//    private final HelloTraceV2 trace;
     private final LogTrace trace;
 
     @GetMapping("/v3/request")
@@ -19,6 +20,7 @@ public class OrderControllerV3 {
         TraceStatus status = null;
         try {
             status = trace.begin("OrderController.request()");
+//            orderService.orderItem(status.getTraceId(), itemId);
             orderService.orderItem(itemId);
             trace.end(status);
             return "ok";

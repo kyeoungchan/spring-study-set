@@ -18,7 +18,6 @@ public class OrderRepositoryV2 {
         TraceStatus status = null;
         try {
             status = trace.beginSync(traceId, "OrderRepository.save()");
-
             // 저장 로직
             if (itemId.equals("ex")) {
                 throw new IllegalStateException("예외 발생!");
@@ -35,7 +34,7 @@ public class OrderRepositoryV2 {
     private void sleep(int millis) {
         try {
             Thread.sleep(millis);
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

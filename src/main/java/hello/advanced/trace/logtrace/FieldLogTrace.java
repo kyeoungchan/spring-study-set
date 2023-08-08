@@ -5,6 +5,7 @@ import hello.advanced.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+//@Component
 public class FieldLogTrace implements LogTrace {
 
     private static final String START_PREFIX = "-->";
@@ -23,13 +24,15 @@ public class FieldLogTrace implements LogTrace {
         return new TraceStatus(traceId, startTimeMs, message);
     }
 
-    private void syncTraceId() {
-        if (traceIdHolder == null) {
-            traceIdHolder = new TraceId();
-        } else {
-            traceIdHolder = traceIdHolder.createNextId();
-        }
+/*
+    public TraceStatus beginSync(TraceId beforeTraceId, String message) {
+        TraceId nextId = beforeTraceId.createNextId();
+        long startTimeMs = System.currentTimeMillis();
+        log.info("[{}] {}{}", nextId.getId(), addSpace(START_PREFIX, nextId.getLevel()), message);
+        return new TraceStatus(nextId, startTimeMs, message);
     }
+*/
+
 
     @Override
     public void end(TraceStatus status) {
@@ -52,6 +55,14 @@ public class FieldLogTrace implements LogTrace {
         }
 
         releaseTraceId();
+    }
+
+    private void syncTraceId() {
+        if (traceIdHolder == null) {
+            traceIdHolder = new TraceId();
+        } else {
+            traceIdHolder = traceIdHolder.createNextId();
+        }
     }
 
     private void releaseTraceId() {
