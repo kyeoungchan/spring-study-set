@@ -3,7 +3,6 @@ package hello.proxy.jdkdynamic;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Slf4j
@@ -23,7 +22,7 @@ public class ReflectionTest {
         log.info("start");
         String result2 = target.callB(); // 호출하는 메서드가 다름
         log.info("result={}", result2);
-        // 공통 로직1 종료
+        // 공통 로직2 종료
 
     }
 
