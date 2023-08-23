@@ -54,7 +54,8 @@ public class OrderSimpleApiController {
         // 참고로 List로 바로 반환하면 안 되고, Result 같은 객체로 감싸서 반환해줘야 한다.
 
         List<SimpleOrderDto> result = orderRepository.findAllByString(new OrderSearch()).stream()
-                .map(SimpleOrderDto::new)
+                .map(SimpleOrderDto::new) // 아래와 같은 명령어다.
+//                .map(o -> new SimpleOrderDto(o))
                 .collect(Collectors.toList());
 
         return result;
@@ -90,7 +91,7 @@ public class OrderSimpleApiController {
     static class SimpleOrderDto {
         private Long orderId;
         private String name;
-        private LocalDateTime orderDate;
+        private LocalDateTime orderDate; // 주문시간
         private OrderStatus orderStatus;
         private Address address;
 
