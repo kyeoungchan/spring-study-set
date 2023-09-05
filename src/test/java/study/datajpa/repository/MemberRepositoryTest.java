@@ -1,6 +1,5 @@
 package study.datajpa.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -182,10 +182,10 @@ class MemberRepositoryTest {
         memberRepository.save(m3);
 
         // NonUniqueResultException
-        Assertions.assertThatThrownBy(() -> memberRepository.findOptionalByUsername("AAA")).isNotExactlyInstanceOf(NonUniqueResultException.class);
+        assertThatThrownBy(() -> memberRepository.findOptionalByUsername("AAA")).isNotExactlyInstanceOf(NonUniqueResultException.class);
 
         // 스프링 프레임워크가 IncorrectResultSizeDataAccessException 로 바꿔서 반환해준다.
-        Assertions.assertThatThrownBy(() -> memberRepository.findOptionalByUsername("AAA")).isInstanceOf(IncorrectResultSizeDataAccessException.class);
+        assertThatThrownBy(() -> memberRepository.findOptionalByUsername("AAA")).isInstanceOf(IncorrectResultSizeDataAccessException.class);
     }
 
 }
