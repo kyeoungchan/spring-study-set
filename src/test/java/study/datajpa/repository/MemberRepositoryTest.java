@@ -1,16 +1,20 @@
 package study.datajpa.repository;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import javax.persistence.NonUniqueResultException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -150,6 +154,38 @@ class MemberRepositoryTest {
         for (Member member : result) {
             System.out.println("member = " + member);
         }
+    }
+
+    @Test
+    public void returnYpe() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> aaa = memberRepository.findListByUsername("AAA");
+        Member findMember = memberRepository.findMemberByUsername("AAA");
+        System.out.println("findMember = " + findMember);
+        Optional<Member> optionalMember = memberRepository.findOptionalByUsername("AAA");
+        System.out.println("optionalMember.get() = " + optionalMember.get());
+
+        // 컬렉션의 경우 값이 없으면 빈 컬렉션 반환
+        List<Member> result = memberRepository.findListByUsername("asfasdf");
+        System.out.println("result.size() = " + result.size()); // 무조건 result != null
+
+        // 단건의 경우에는 값이 없으면 null 반환
+        Member result2 = memberRepository.findMemberByUsername("asdfasdf");
+        System.out.println("result2 = " + result2);
+
+        // 만약 단건 조회 결과가 2개 이상이면 예외가 터진다.
+        Member m3 = new Member("AAA", 10);
+        memberRepository.save(m3);
+
+        // NonUniqueResultException
+        Assertions.assertThatThrownBy(() -> memberRepository.findOptionalByUsername("AAA")).isNotExactlyInstanceOf(NonUniqueResultException.class);
+
+        // 스프링 프레임워크가 IncorrectResultSizeDataAccessException 로 바꿔서 반환해준다.
+        Assertions.assertThatThrownBy(() -> memberRepository.findOptionalByUsername("AAA")).isInstanceOf(IncorrectResultSizeDataAccessException.class);
     }
 
 }
