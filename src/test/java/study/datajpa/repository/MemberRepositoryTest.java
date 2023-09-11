@@ -1,9 +1,14 @@
 package study.datajpa.repository;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
@@ -20,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(value = false)
 class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
@@ -187,5 +192,45 @@ class MemberRepositoryTest {
         // 스프링 프레임워크가 IncorrectResultSizeDataAccessException 로 바꿔서 반환해준다.
         assertThatThrownBy(() -> memberRepository.findOptionalByUsername("AAA")).isInstanceOf(IncorrectResultSizeDataAccessException.class);
     }
+
+    //페이징 조건과 정렬 조건 설정
+    @Test
+    public void paging() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+
+        int age = 10;
+/*
+        int offset = 0;
+        int limit = 3;
+*/
+
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+        // 0 페이지부터, 3개, 정렬 조건
+//        PageRequest pageRequest = PageRequest.of(0, 3);
+        // 3번째 인자인 sorting 조건은 빼도 된다.
+
+        // when
+        Page<Member> page = memberRepository.findByAge(age, pageRequest);
+        Page<MemberDto> dtoMap = page.map(m -> new MemberDto(m.getId(), m.getUsername(), null));
+
+        // then
+/*
+        List<Member> members = memberJpaRepository.findByPage(age, offset, limit);
+        long totalCount = memberRepository.totalCount(age);
+*/
+        List<Member> content = page.getContent(); //조회된 데이터
+        assertThat(content.size()).isEqualTo(3); //조회된 데이터 수
+        assertThat(page.getTotalElements()).isEqualTo(5); //전체 데이터 수
+        assertThat(page.getNumber()).isEqualTo(0); //페이지 번호
+        assertThat(page.getTotalPages()).isEqualTo(2); //전체 페이지 번호
+        assertThat(page.isFirst()).isTrue(); //첫번째 항목인가?
+        assertThat(page.hasNext()).isTrue(); //다음 페이지가 있는가?
+    }
+
 
 }
