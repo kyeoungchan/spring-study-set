@@ -290,11 +290,20 @@ class MemberRepositoryTest {
     public void queryHint() {
         // given
         memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
         em.flush();
         em.clear();
 
         // when
-        Member member = memberRepository.findReadOnlyByUsername("member1");
+//        Member member = memberRepository.findReadOnlyByUsername("member1");
+        PageRequest pageRequest = PageRequest.of(0, 3);
+        Page<Member> page = memberRepository.findPageReadOnlyByUsername("member1", pageRequest);
+        List<Member> members = page.getContent();
+        Member member = members.get(0);
         member.setUsername("member2");
 
         em.flush(); // Update Query 실행 X

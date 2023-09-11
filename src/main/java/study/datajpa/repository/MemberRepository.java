@@ -43,8 +43,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findOptionalByUsername(String username); // 단건 Optional
 
-    @Query(value = "select m from Member m left join m.team t",
-            countQuery = "select count(m.username) from Member m")
+//    @Query(value = "select m from Member m left join m.team t",
+//            countQuery = "select count(m.username) from Member m")
     Page<Member> findByAge(int age, Pageable pageable);
 //    Slice<Member> findByAge(in t age, Pageable pageable);
 //    List<Member> findByAge(int age, Pageable pageable);
@@ -76,10 +76,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m")
     List<Member> findMemberNamedEntityGraph();
 
-    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"),
-            forCounting = true)
+    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
     Member findReadOnlyByUsername(String username);
     // 스냅샷이 없기 때문에 내부적으로 읽기만 가능하게 한다.
+
+    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly",
+            value = "true"),
+            forCounting = true)
+    Page<Member> findPageReadOnlyByUsername(String name, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Member> findLockByUsername(String name);
