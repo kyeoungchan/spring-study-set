@@ -1,6 +1,9 @@
 package study.datajpa.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -9,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 import study.datajpa.repository.MemberRepository;
+import study.datajpa.repository.TeamRepository;
 
 import javax.annotation.PostConstruct;
 
@@ -18,6 +23,7 @@ import javax.annotation.PostConstruct;
 public class MemberController {
 
     private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
 
     @GetMapping("/members/{id}")
     public String findMember(@PathVariable("id") Long id) {
@@ -50,10 +56,23 @@ public class MemberController {
                 .map(MemberDto::new);
     }
 
+    @GetMapping("/members_teams")
+    public String list(
+            @Qualifier("member") Pageable memberPageable,
+            @Qualifier("team") Pageable teamPageable
+    ) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Page<Member> memberPage = memberRepository.findAll(memberPageable);
+        Page<Team> teamPage = teamRepository.findAll(teamPageable);
+
+        return objectMapper.writeValueAsString(memberPage) + objectMapper.writeValueAsString(teamPage);
+    }
+
     @PostConstruct
     public void init() {
         for (int i = 0; i < 100; i++) {
             memberRepository.save(new Member("user" + i));
+            teamRepository.save(new Team("team" + i));
         }
     }
 }
