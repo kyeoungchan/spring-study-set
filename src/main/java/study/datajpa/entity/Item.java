@@ -1,7 +1,6 @@
 package study.datajpa.entity;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Persistable;
@@ -31,7 +30,7 @@ public class Item implements Persistable<String> {
 
     @Override
     public String getId() {
-        return null;
+        return id;
     }
 
     @Override
