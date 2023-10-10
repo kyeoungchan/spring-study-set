@@ -2,7 +2,6 @@ package study.datajpa.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import study.datajpa.dto.MemberDto;
@@ -87,4 +86,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Member> findLockByUsername(String name);
+
+    //    List<UsernameOnly> findProjectionsByUsername(String name);
+//    List<UsernameOnlyDto> findProjectionsByUsername(String name);
+    <T> List<T> findProjectionsByUsername(String name, Class<T> type);
 }
